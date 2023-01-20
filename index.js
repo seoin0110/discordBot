@@ -73,7 +73,7 @@ client.on(Events.MessageCreate, async (msg)=>{
           if(forbidden_array.length>=1 && forbidden_array[forbidden_array.length-1]===""){
             forbidden_array.pop();
           }
-          console.log(forbidden_array);
+          //console.log(forbidden_array);
           for(forbidden_word of forbidden_array){
             if(msg.content.includes(forbidden_word)){
               msg.channel.send(`<@${msg.author.id}> "${forbidden_word}" 금지!`);
