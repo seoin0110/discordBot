@@ -88,7 +88,7 @@ client.on(Events.MessageCreate, async (msg)=>{
     
     
 
-    if(Math.random()*4<=1){
+    if(Math.random()*20<=1){
       msg.channel.send("나 심심해");;
     }
 
