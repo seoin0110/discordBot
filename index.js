@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { Client, Collection, Events, GatewayIntentBits} = require("discord.js");
+const { Client, Collection, Events, GatewayIntentBits } = require("discord.js");
 require("dotenv").config();
 
 let obj = {
@@ -10,8 +10,8 @@ let obj = {
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds,
-    GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildMessages],
+  GatewayIntentBits.MessageContent,
+  GatewayIntentBits.GuildMessages],
 });
 
 
@@ -22,20 +22,39 @@ client.commands = new Collection();
 const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs
   .readdirSync(commandsPath)
-  .filter((file)=>file.endsWith(".js"));
+  .filter((file) => file.endsWith(".js"));
 
-for (const file of commandFiles){
+for (const file of commandFiles) {
   const filePath = path.join(commandsPath, file);
   const command = require(filePath);
-  if ('data' in command && 'execute' in command){
-    client.commands.set(command.data.name,command);
-  }else{
+  if ('data' in command && 'execute' in command) {
+    client.commands.set(command.data.name, command);
+  } else {
     console.log("데이터가 제대로 처리되지 않았습니다.. 스킵합니다..");
   }
 }
 
+
+//여기서부터는 이벤트 핸들러
+const eventsPath = path.join(__dirname, "events");
+const eventFiles = fs.readFileSync(eventsPath).filter(file => file.endswith(".js"));
+
+for (const file of eventFiles) {
+  const filePath = path.join(eventsPath, file);
+  const event = require(filePath);
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args));
+  } else {
+    client.on(event.name, (...args) => event.execute(...args));
+  }
+}
+
+
+
 console.log(client.commands);
 
+
+/*
 
 //여기서부터는 이벤트 처리
 client.on(Events.ClientReady, (c) => {
@@ -51,13 +70,13 @@ client.on(Events.MessageCreate, async (msg)=>{
     //     msg.channel.send("퐁!");
     // }
 
-    /*
-    if(msg.content.includes("fuck"))
-    {
-      msg.channel.send(`<@${msg.author.id}> you!`);
-      msg.delete();
-    }
-    */
+    
+    // if(msg.content.includes("fuck"))
+    // {
+    //   msg.channel.send(`<@${msg.author.id}> you!`);
+    //   msg.delete();
+    // }
+    
    
     //한줄씩 파일 읽기 -> map으로 금지어 삭제 및 "금지어 금지" 전송
     fs.stat('./forbidden.txt',(err,stats)=>{
@@ -117,6 +136,6 @@ client.on(Events.InteractionCreate, async interaction => {
 client.on(Events.GuildMemberAdd,  member => {
   member.channel.send(`${member.id} 등장!`);
 });
-
+*/
 
 client.login(process.env.TOKEN);
