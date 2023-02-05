@@ -37,7 +37,8 @@ for (const file of commandFiles) {
 
 //여기서부터는 이벤트 핸들러
 const eventsPath = path.join(__dirname, "events");
-const eventFiles = fs.readFileSync(eventsPath).filter(file => file.endswith(".js"));
+console.log(eventsPath);
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".js"));
 
 for (const file of eventFiles) {
   const filePath = path.join(eventsPath, file);
