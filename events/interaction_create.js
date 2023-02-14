@@ -1,4 +1,4 @@
-const { Events } = require('discord.js');
+const { Events, IntegrationApplication } = require('discord.js');
 
 module.exports = {
     name: Events.InteractionCreate,
@@ -11,6 +11,8 @@ module.exports = {
         if (!command) {
             console.log("구현되지 않은 명령어입니다.");
         }
+
+        await interaction.deferReply();
 
         try {
             await command.execute(interaction);

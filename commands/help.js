@@ -20,6 +20,6 @@ module.exports = {
             .setImage('https://cdn-store.leagueoflegends.co.kr/images/v2/emotes/1502.png')
             .setTimestamp()
             .setFooter({ text: 'ボット', iconURL: 'https://cdn-store.leagueoflegends.co.kr/images/v2/emotes/3133.png' });
-        await interaction.reply({ embeds: [replyEmbed] });
+        await interaction.editReply({ embeds: [replyEmbed] });
     },
 };

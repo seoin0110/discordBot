@@ -1,4 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const util = require("util");
+const wait = util.promisify(setTimeout);
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,8 +12,8 @@ module.exports = {
             .setTitle("소난다..")
             .setURL("https://www.youtube.com/")
             .setDescription("화낸척 하기는..");
-        await interaction.reply({ embeds: [replyEmbed] });
-        const message = await interaction.channel.send("asdf");
+        await wait(5e3);
+        const message = await interaction.editReply({ embeds: [replyEmbed] });
         message.react("😎");
     },
 };
