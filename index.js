@@ -1,20 +1,22 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 const { Client, Collection, Events, GatewayIntentBits } = require("discord.js");
 require("dotenv").config();
 
 let obj = {
   name: "asdf",
   id: 1234,
-}
+};
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds,
-  GatewayIntentBits.MessageContent,
-  GatewayIntentBits.GuildMessages],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildEmojisAndStickers,
+    GatewayIntentBits.GuildMessageReactions,
+  ],
 });
-
-
 
 //여기서부터는 커멘드 등록
 client.commands = new Collection();
@@ -27,16 +29,16 @@ const commandFiles = fs
 for (const file of commandFiles) {
   const filePath = path.join(commandsPath, file);
   const command = require(filePath);
-  if ('data' in command && 'execute' in command) {
+  if ("data" in command && "execute" in command) {
     client.commands.set(command.data.name, command);
   } else {
     console.log("데이터가 제대로 처리되지 않았습니다.. 스킵합니다..");
   }
 }
 
-
 //여기서부터는 이벤트 핸들러
 const eventsPath = path.join(__dirname, "events");
+console.log(eventsPath);
 const eventFiles = fs
   .readdirSync(eventsPath)
   .filter((file) => file.endsWith(".js"));
@@ -51,10 +53,7 @@ for (const file of eventFiles) {
   }
 }
 
-
-
 console.log(client.commands);
-
 
 /*
 
